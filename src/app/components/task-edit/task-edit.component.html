@@ -1,0 +1,25 @@
+<div class="container">
+    <h2>Editar Tarea</h2>
+  
+    @if (taskForm) {
+      <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="title" class="form-label">Título</label>
+          <input id="title" type="text" class="form-control" formControlName="title">
+        </div>
+  
+        <div class="mb-3">
+          <label for="description" class="form-label">Descripción</label>
+          <textarea id="description" class="form-control" formControlName="description"></textarea>
+        </div>
+  
+        <div class="form-check">
+          <input id="completed" type="checkbox" class="form-check-input" formControlName="completed">
+          <label for="completed" class="form-check-label">Completada</label>
+        </div>
+  
+        <button type="submit" class="btn btn-primary" [disabled]="!taskForm.valid">Guardar Cambios</button>
+        <button type="button" class="btn btn-secondary ms-2" (click)="cancel()">Cancelar</button>
+      </form>
+    }
+  </div>

@@ -1,0 +1,47 @@
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 class="text-primary fw-bold">📌 Lista de Tareas</h2>
+      <div class="btn-group">
+        <button class="btn btn-outline-primary" (click)="setFilter('all')">Todas</button>
+        <button class="btn btn-outline-warning" (click)="setFilter('pending')">Pendientes</button>
+        <button class="btn btn-outline-success" (click)="setFilter('completed')">Completadas</button>
+      </div>
+    </div>
+  
+    <div *ngIf="tasks.length > 0; else emptyList">
+      <div class="list-group">
+        <div *ngFor="let task of tasks" 
+            [@fadeIn] 
+            class="list-group-item shadow-sm rounded d-flex justify-content-between align-items-center mb-2 p-3 border border-light"
+            [class.bg-light]="task.isCompleted">
+            
+          <div class="flex-grow-1">
+            <h5 class="fw-bold mb-1" [class.text-decoration-line-through]="task.isCompleted">
+              {{ task.title }}
+            </h5>
+            <p class="mb-1 text-muted">{{ task.description }}</p>
+            <span *ngIf="task.isCompleted" class="badge bg-success">✅ Completada</span>
+            <span *ngIf="!task.isCompleted" class="badge bg-warning">⏳ Pendiente</span>
+          </div>
+  
+          <div class="d-flex">
+            <button class="btn btn-sm btn-outline-success me-2" (click)="toggleComplete(task)">
+              {{ task.isCompleted ? 'Reabrir' : 'Completar' }}
+            </button>
+            <button class="btn btn-sm btn-outline-warning me-2" (click)="task.id ? editTask(task.id) : null">
+              ✏️ Editar
+            </button>
+            <button class="btn btn-sm btn-outline-danger" (click)="deleteTask(task)">
+              ❌ Eliminar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <ng-template #emptyList>
+      <div class="alert alert-info text-center" role="alert">
+        🚀 ¡No hay tareas aún! Agrega una nueva para empezar.
+      </div>
+    </ng-template>
+  </div>

@@ -1,0 +1,54 @@
+<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="w-50 bg-white p-4 rounded shadow">
+      <!-- Título -->
+      <div class="mb-3">
+        <label for="title" class="form-label fw-semibold">Título:</label>
+        <input 
+          id="title" 
+          formControlName="title" 
+          type="text" 
+          class="form-control"
+          [class.is-invalid]="taskForm.get('title')?.invalid && taskForm.get('title')?.touched"
+        />
+        <div class="invalid-feedback">
+          <span *ngIf="taskForm.get('title')?.errors?.['required']">⚠️ El título es obligatorio.</span>
+          <span *ngIf="taskForm.get('title')?.errors?.['minlength']">⚠️ Mínimo 3 caracteres.</span>
+        </div>
+      </div>
+  
+      <!-- Descripción -->
+      <div class="mb-3">
+        <label for="description" class="form-label fw-semibold">Descripción:</label>
+        <textarea 
+          id="description" 
+          formControlName="description" 
+          class="form-control"
+          [class.is-invalid]="taskForm.get('description')?.invalid && taskForm.get('description')?.touched"
+        ></textarea>
+        <div class="invalid-feedback">
+          <span *ngIf="taskForm.get('description')?.errors?.['required']">⚠️ La descripción es obligatoria.</span>
+          <span *ngIf="taskForm.get('description')?.errors?.['minlength']">⚠️ Mínimo 10 caracteres.</span>
+        </div>
+      </div>
+  
+      <!-- Checkbox -->
+      <div class="mb-3 form-check">
+        <input 
+          type="checkbox" 
+          formControlName="completed" 
+          class="form-check-input"
+          id="completed"
+        />
+        <label class="form-check-label fw-semibold" for="completed">¿Completada?</label>
+      </div>
+  
+      <!-- Botón -->
+      <button 
+        type="submit" 
+        [disabled]="taskForm.invalid"
+        class="btn btn-primary w-100 fw-bold"
+      >
+        Guardar
+      </button>
+    </form>
+  </div>
