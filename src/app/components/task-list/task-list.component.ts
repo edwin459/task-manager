@@ -38,29 +38,42 @@ export class TaskListComponent implements OnInit {
       this.tasks = this.filter === 'pending' ? data.filter(t => !t.isCompleted) : data;
     });
   }
-
   toggleComplete(task: Task): void {
     const updatedTask = { ...task, isCompleted: !task.isCompleted };
+    console.log('Enviando tarea actualizada:', updatedTask); // Debugging
+
     if (task.id) {
-      this.taskService.updateTask(task.id, updatedTask).subscribe(() => {
-        task.isCompleted = !task.isCompleted;
-        alert( `✅ Tarea "${task.title}" marcada como ${task.isCompleted ? 'completada' : 'pendiente'}` );
+      this.taskService.updateTask(task.id, updatedTask).subscribe({
+        next: (response) => {
+          console.log('Tarea actualizada:', response);
+          task.isCompleted = !task.isCompleted;
+          alert( `✅ Tarea "${task.title}" marcada como ${task.isCompleted ? 'completada' : 'pendiente'}`);
+        },
+        error: (err) => {
+          console.error('Error al actualizar tarea:', err);
+          alert('❌ Error al actualizar la tarea.');
+        }
       });
     }
   }
 
+ 
   deleteTask(task: Task): void {
-    if (task.id && confirm(`¿Seguro que quieres eliminar la tarea "${task.title}"?`)) {
-      this.taskService.deleteTask(task.id).subscribe(() => {
-        this.tasks = this.tasks.filter(t => t.id !== task.id);
-        alert('🗑️ Tarea eliminada exitosamente.');
+    if (task.id && confirm( `¿seguro que quieres eliminar la Tarea"${task.title}"`)) {
+      this.taskService.deleteTask(task.id).subscribe({
+        next: () => {
+          this.tasks = this.tasks.filter(t => t.id !== task.id);
+          alert('🗑️ Tarea eliminada exitosamente.');
+        },
+        error: (err) => {
+          console.error('Error al eliminar tarea:', err);
+          alert('❌ Error al eliminar la tarea.');
+        }
       });
     }
   }
 
-  editTask(taskId: number){
-    this.router.navigate(['/edit', taskId]);
-  }
+ 
 
   onTaskAdded(newTask: Task): void {
     this.tasks.push(newTask);
